@@ -1,77 +1,63 @@
-# custosMensais
+# Custos Mensais
 
-Aplicação fullstack local para controle de custos mensais.
+Aplicação fullstack para controle de custos mensais pessoais.
 
 ## Stack
 
-- Frontend: React, TypeScript e Vite
-- Backend: ASP.NET Core Web API
-- Persistência: Entity Framework Core com SQLite
-- Documentação da API: Swagger UI
+| Camada | Tecnologia |
+|--------|-----------|
+| Frontend | React 19 + TypeScript + Vite |
+| Backend | ASP.NET Core Web API (.NET) |
+| Banco de dados | SQLite via Entity Framework Core |
+| Documentação | Swagger UI |
 
-## Rodar Backend
+## Pré-requisitos
 
-```powershell
-cd "C:\Users\Gustavo Passos\OneDrive - Labsit\Documentos\Pessoal\repo\custosMensais\backend\custosMensais.Api"
-dotnet run --urls http://localhost:5236
+- [.NET SDK](https://dotnet.microsoft.com/download) (versão usada no projeto)
+- [Node.js](https://nodejs.org/) 18+
+
+## Como rodar
+
+### 1. Backend
+
+```bash
+cd backend/custosMensais.Api
+dotnet run
 ```
 
-API:
+A API sobe em `http://localhost:5236` e o Swagger em `http://localhost:5236/swagger`.
 
-```text
-http://localhost:5236
-```
-
-Swagger:
-
-```text
-http://localhost:5236/swagger
-```
-
-## Rodar Frontend
+### 2. Frontend
 
 Em outro terminal:
 
-```powershell
-cd "C:\Users\Gustavo Passos\OneDrive - Labsit\Documentos\Pessoal\repo\custosMensais\frontend"
+```bash
+cd frontend
+cp .env.example .env   # ajuste a URL da API se necessário
 npm install
 npm run dev
 ```
 
-Aplicação:
+A aplicação sobe em `http://localhost:5173`.
 
-```text
-http://127.0.0.1:5173/
+## Variáveis de ambiente
+
+O frontend usa um arquivo `.env` (não versionado). Copie o exemplo e ajuste se necessário:
+
+```bash
+cp frontend/.env.example frontend/.env
 ```
 
-## Verificar Portas
+| Variável | Descrição | Padrão |
+|----------|-----------|--------|
+| `VITE_API_URL` | URL base da API | `http://localhost:5236/api` |
 
-```powershell
-Get-NetTCPConnection -LocalPort 5236 -ErrorAction SilentlyContinue
-Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue
-```
+## Build
 
-## Derrubar Processos Pelas Portas
+```bash
+# Backend
+dotnet build custosMensais.slnx
 
-```powershell
-Get-NetTCPConnection -LocalPort 5236 -ErrorAction SilentlyContinue |
-  ForEach-Object { Stop-Process -Id $_.OwningProcess }
-
-Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue |
-  ForEach-Object { Stop-Process -Id $_.OwningProcess }
-```
-
-## Builds
-
-Backend:
-
-```powershell
-dotnet build "C:\Users\Gustavo Passos\OneDrive - Labsit\Documentos\Pessoal\repo\custosMensais\custosMensais.slnx"
-```
-
-Frontend:
-
-```powershell
-cd "C:\Users\Gustavo Passos\OneDrive - Labsit\Documentos\Pessoal\repo\custosMensais\frontend"
-npm run build
+# Frontend
+cd frontend && npm run build
 ```

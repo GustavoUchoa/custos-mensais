@@ -74,16 +74,31 @@ function App() {
     setForm((current) => ({ ...current, referenceMonth: selectedMonth }));
   }, [selectedMonth]);
 
-  const categoryBars = useMemo(() => {
-    const maxValue = Math.max(...Object.values(summary.totalsByCategory), 0);
+  const pieSlices = useMemo(() => {
+    const total = Object.values(summary.totalsByCategory).reduce((sum, v) => sum + v, 0);
+    if (total === 0) return [];
+
+    const colors = ["#1a4731", "#2d7b5a", "#40916c", "#52b788", "#74c69d", "#95d5b2", "#b7e4c7"];
+    const cx = 100, cy = 100, r = 80;
+    let angle = -Math.PI / 2;
 
     return Object.entries(summary.totalsByCategory)
       .sort((a, b) => b[1] - a[1])
-      .map(([category, value]) => ({
-        category,
-        value,
-        percentage: maxValue > 0 ? Math.max(8, Math.round((value / maxValue) * 100)) : 0,
-      }));
+      .map(([category, value], i) => {
+        const sweep = (value / total) * 2 * Math.PI;
+        const x1 = cx + r * Math.cos(angle);
+        const y1 = cy + r * Math.sin(angle);
+        angle += sweep;
+        const x2 = cx + r * Math.cos(angle);
+        const y2 = cy + r * Math.sin(angle);
+        const largeArc = sweep > Math.PI ? 1 : 0;
+        return {
+          category,
+          value,
+          color: colors[i % colors.length],
+          path: `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${largeArc} 1 ${x2},${y2} Z`,
+        };
+      });
   }, [summary.totalsByCategory]);
 
   const updateForm = (field: keyof ExpenseFormData, value: string) => {
@@ -354,19 +369,22 @@ function App() {
               <span>{formatMonth(selectedMonth)}</span>
             </div>
 
-            {categoryBars.length > 0 ? (
-              <div className="bar-list">
-                {categoryBars.map((bar) => (
-                  <div className="bar-item" key={bar.category}>
-                    <div className="bar-label">
-                      <span>{bar.category}</span>
-                      <strong>{formatCurrency(bar.value)}</strong>
-                    </div>
-                    <div className="bar-track">
-                      <span style={{ width: `${bar.percentage}%` }} />
-                    </div>
-                  </div>
-                ))}
+            {pieSlices.length > 0 ? (
+              <div className="pie-wrap">
+                <svg viewBox="0 0 200 200" className="pie-svg">
+                  {pieSlices.map((s) => (
+                    <path key={s.category} d={s.path} fill={s.color} stroke="#fff" strokeWidth="1.5" />
+                  ))}
+                </svg>
+                <ul className="pie-legend">
+                  {pieSlices.map((s) => (
+                    <li key={s.category}>
+                      <span className="pie-dot" style={{ background: s.color }} />
+                      <span className="pie-cat">{s.category}</span>
+                      <strong>{formatCurrency(s.value)}</strong>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : (
               <EmptyState text="Cadastre um custo para ver as categorias do mês." />

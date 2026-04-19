@@ -183,6 +183,20 @@ textarea:focus {
   gap: 14px;
 }
 
+.form-title-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.form-close-btn {
+  display: none;
+}
+
+.fab {
+  display: none;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -416,7 +430,40 @@ textarea:focus {
   }
 
   .expense-form {
-    position: static;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow-y: auto;
+    border-radius: 0;
+    border: none;
+    display: none;
+  }
+
+  .expense-form.is-open {
+    display: grid;
+  }
+
+  .form-close-btn {
+    display: flex;
+  }
+
+  .fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 90;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: #226748;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 400;
+    box-shadow: 0 4px 16px rgba(34, 103, 72, 0.4);
   }
 }
 
@@ -444,8 +491,12 @@ textarea:focus {
   }
 
   .expense-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
+  }
+
+  .expense-row > div:first-child {
+    grid-column: 1 / -1;
   }
 
   .expense-row > span::before,
@@ -467,6 +518,25 @@ textarea:focus {
 
   .expense-row > strong:nth-child(4)::before {
     content: "Valor";
+  }
+
+  .status-pill {
+    min-height: 44px;
+  }
+
+  .row-actions button {
+    min-height: 44px;
+  }
+
+  .pie-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pie-svg {
+    width: 140px;
+    height: 140px;
+    align-self: center;
   }
 }
 

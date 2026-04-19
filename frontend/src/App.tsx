@@ -47,6 +47,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
@@ -161,6 +162,7 @@ function App() {
   const editExpense = (expense: Expense) => {
     setEditingId(expense.id);
     setForm(toFormData(expense));
+    setFormOpen(true);
     showMessage("Editando custo selecionado.");
   };
 
@@ -212,15 +214,34 @@ function App() {
       {message && <p className="toast">{message}</p>}
       {error && <p className="error-banner">{error}</p>}
 
+      <button
+        className="fab"
+        type="button"
+        aria-label="Novo custo"
+        onClick={() => setFormOpen(true)}
+      >
+        +
+      </button>
+
       <section className="workspace">
-        <form className="expense-form" onSubmit={handleSubmit}>
+        <form className={`expense-form${formOpen ? " is-open" : ""}`} onSubmit={handleSubmit}>
           <div className="section-title">
             <p>{editingId ? "Editar custo" : "Novo custo"}</p>
-            {editingId && (
-              <button className="ghost-button" type="button" onClick={resetForm}>
-                Cancelar edição
+            <div className="form-title-actions">
+              {editingId && (
+                <button className="ghost-button" type="button" onClick={resetForm}>
+                  Cancelar
+                </button>
+              )}
+              <button
+                className="ghost-button form-close-btn"
+                type="button"
+                onClick={() => { resetForm(); setFormOpen(false); }}
+                aria-label="Fechar formulário"
+              >
+                ✕
               </button>
-            )}
+            </div>
           </div>
 
           <label>

@@ -256,6 +256,30 @@ textarea:focus {
   gap: 18px;
 }
 
+.section-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.export-btn {
+  min-height: 32px;
+  border: 1px solid #cbd8ce;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  background: #fff;
+  color: #23382b;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.export-btn:hover {
+  background: #f0f5f2;
+  border-color: #a8beae;
+}
+
 .filters {
   display: grid;
   grid-template-columns: 1.3fr minmax(160px, 0.7fr) minmax(140px, 0.6fr);

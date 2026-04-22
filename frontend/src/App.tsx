@@ -1,4 +1,5 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { ExportButton } from "./components/ExportButton";
 import {
   createExpense,
   deleteExpense,
@@ -415,7 +416,10 @@ function App() {
           <section className="expense-list" aria-label="Lista de custos">
             <div className="section-title">
               <p>Custos cadastrados</p>
-              <span>{isLoading ? "Carregando" : `${expenses.length} encontrados`}</span>
+              <div className="section-title-actions">
+                <span>{isLoading ? "Carregando" : `${expenses.length} encontrados`}</span>
+                <ExportButton expenses={expenses} referenceMonth={selectedMonth} />
+              </div>
             </div>
 
             {expenses.length > 0 ? (
